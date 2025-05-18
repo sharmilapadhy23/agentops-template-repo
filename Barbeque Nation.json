@@ -1,0 +1,268 @@
+{
+  "agent_id": "",
+  "channel": "voice",
+  "last_modification_timestamp": 1747528310544,
+  "agent_name": "Barbeque Nation",
+  "response_engine": {
+    "type": "retell-llm",
+    "llm_id": "llm_5cbd6965d0abff124ec4a901fd4b",
+    "version": 0
+  },
+  "webhook_url": "https://hook.eu2.make.com/145s8yj5krh6t27kirba13cp2woidojt",
+  "language": "en-IN",
+  "opt_out_sensitive_data_storage": false,
+  "opt_in_signed_url": false,
+  "post_call_analysis_data": [
+    {
+      "type": "string",
+      "name": "Name",
+      "description": "The customer’s full name who made the booking or enquiry."
+    },
+    {
+      "type": "number",
+      "name": "Phone Number",
+      "description": "The customer’s 10-digit contact number."
+    },
+    {
+      "type": "number",
+      "name": "Booking Date",
+      "description": "The date for which the booking is requested (format: YYYY-MM-DD)."
+    },
+    {
+      "type": "number",
+      "name": "Booking Time",
+      "description": "The time for the booking (format: HH:MM, 24-hour or AM/PM)."
+    },
+    {
+      "type": "string",
+      "name": "Outlet ",
+      "description": "The Barbeque Nation branch/location for the booking or enquiry."
+    },
+    {
+      "type": "number",
+      "name": "Number of Guests",
+      "description": "The number of people included in the booking."
+    },
+    {
+      "type": "string",
+      "name": "Call summary",
+      "description": "A brief summary of the conversation, including what was requested and any next steps."
+    },
+    {
+      "type": "string",
+      "name": "Call_outcome",
+      "description": "The main reason for the call or chat (Enquiry, Booking, Update, Cancellation, Miscellaneous, etc.)."
+    }
+  ],
+  "version": 0,
+  "is_published": true,
+  "version_title": "BarbequeNation Chatbot",
+  "post_call_analysis_model": "gpt-4o-mini",
+  "voice_id": "11labs-Amritanshu",
+  "max_call_duration_ms": 3600000,
+  "interruption_sensitivity": 0.8,
+  "voicemail_detection_timeout_ms": 30000,
+  "allow_user_dtmf": true,
+  "user_dtmf_options": {},
+  "retellLlmData": {
+    "llm_id": "llm_5cbd6965d0abff124ec4a901fd4b",
+    "version": 0,
+    "model": "gpt-4.1",
+    "general_prompt": "You are a helpful Barbeque Nation assistant for Delhi and Bangalore outlets. You answer FAQs, help customers book tables, update or cancel bookings, and provide menu and pricing details. Always be polite and concise",
+    "states": [
+      {
+        "name": "Welcome",
+        "state_prompt": "Hi! Welcome to Barbeque Nation. How can I assist you today?\nYou can ask about our menu, make a new booking, update or cancel a booking, or ask any other questions.",
+        "edges": [
+          {
+            "description": "yes, another, more, new, book, update, cancel, question",
+            "speak_during_transition": false,
+            "destination_state_name": "BookingConfirmation"
+          },
+          {
+            "description": "yes, another, more, new, book, update, cancel, question",
+            "speak_during_transition": false,
+            "destination_state_name": "CancellationConfirmation"
+          },
+          {
+            "description": "The condition that triggers the transition to the next state. e.g., \"If the user has provided the name\"",
+            "speak_during_transition": false,
+            "destination_state_name": "UpdateBooking"
+          },
+          {
+            "description": "book, reserve, update, cancel, new, another, more",
+            "speak_during_transition": false,
+            "destination_state_name": "FAQ"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "NewBooking",
+        "state_prompt": "Great! Let’s make a reservation.\nFor which city and outlet would you like to book a table?",
+        "edges": [
+          {
+            "description": "book, booking, reserve, reservation, table, make a booking, make reservation",
+            "speak_during_transition": false,
+            "destination_state_name": "Welcome"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "BookingDetails",
+        "state_prompt": "Please provide thename,phone number, date and time for your booking.",
+        "edges": [
+          {
+            "description": "",
+            "speak_during_transition": false,
+            "destination_state_name": "NewBooking"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "GuestCount",
+        "state_prompt": "How many guests will be attending?",
+        "edges": [
+          {
+            "description": "The condition that triggers the transition to the next state. e.g., \"If the user has provided the name\"",
+            "speak_during_transition": false,
+            "destination_state_name": "BookingDetails"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "CustomerDetails",
+        "state_prompt": "Can I have your name and contact number to confirm the booking?\n\n",
+        "edges": [
+          {
+            "description": "",
+            "speak_during_transition": false,
+            "destination_state_name": "GuestCount"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "BookingConfirmation",
+        "state_prompt": "Thank you, {{user_name}}. Your table is booked at {{outlet}} on {{date}} at {{time}} for {{guest_count}} guests.\nIs there anything else I can help you with?",
+        "edges": [
+          {
+            "description": "",
+            "speak_during_transition": false,
+            "destination_state_name": "CustomerDetails"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "UpdateBooking",
+        "state_prompt": "To update your booking, please provide your booking reference number or the phone number used for the reservation.",
+        "edges": [
+          {
+            "description": "yes, another, more, new, book, update, cancel, question",
+            "speak_during_transition": false,
+            "destination_state_name": "UpdateDetails"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "UpdateDetails",
+        "state_prompt": "What would you like to change in your booking? (e.g., date, time, number of guests)",
+        "edges": [
+          {
+            "description": "update, change, modify, edit, change booking",
+            "speak_during_transition": false,
+            "destination_state_name": "Welcome"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "CancelBooking",
+        "state_prompt": "To cancel your booking, please provide your booking reference number or the phone number used for the reservation.",
+        "edges": [
+          {
+            "description": "cancel, cancellation, remove booking",
+            "speak_during_transition": false,
+            "destination_state_name": "Welcome"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "CancellationConfirmation",
+        "state_prompt": "Your booking has been cancelled. We hope to see you soon!\nIs there anything else I can help you with?",
+        "edges": [
+          {
+            "description": "The condition that triggers the transition to the next state. e.g., \"If the user has provided the name\"",
+            "speak_during_transition": false,
+            "destination_state_name": "CancelBooking"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "Fallback",
+        "state_prompt": "I’m sorry, I didn’t understand that. Could you please rephrase your request or choose from booking, update, cancellation, or FAQs?",
+        "edges": [
+          {
+            "description": "",
+            "speak_during_transition": false,
+            "destination_state_name": "Welcome"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "End",
+        "state_prompt": "",
+        "edges": [
+          {
+            "description": "no, nothing, exit, quit, done, thank you, thanks",
+            "speak_during_transition": false,
+            "destination_state_name": "BookingConfirmation"
+          },
+          {
+            "description": "no, nothing, exit, quit, done, thank you, thanks",
+            "speak_during_transition": false,
+            "destination_state_name": "CancellationConfirmation"
+          },
+          {
+            "description": "no, nothing, exit, quit, done, thank you, thanks",
+            "speak_during_transition": false,
+            "destination_state_name": "UpdateBooking"
+          },
+          {
+            "description": "no, nothing, exit, quit, done, thank you, thanks",
+            "speak_during_transition": false,
+            "destination_state_name": "FAQ"
+          }
+        ],
+        "tools": []
+      },
+      {
+        "name": "FAQ",
+        "state_prompt": "What would you like to know? You can ask about our menu, pricing, timings, or outlet locations.",
+        "edges": [
+          {
+            "description": "menu, price, pricing, cost, timing, hours, location, address, info, information, question, faq",
+            "speak_during_transition": false,
+            "destination_state_name": "Welcome"
+          }
+        ],
+        "tools": []
+      }
+    ],
+    "starting_state": "Welcome",
+    "begin_message": "Hello! Welcome to Barbeque Nation. How can I assist you today? (booking, enquiry, or cancellation)",
+    "knowledge_base_ids": [],
+    "last_modification_timestamp": 1747527265880,
+    "is_published": true
+  },
+  "conversationFlow": null,
+  "llmURL": null
+}
